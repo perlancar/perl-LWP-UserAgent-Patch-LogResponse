@@ -19,8 +19,18 @@ my $p_simple_request = sub {
     my $resp = $orig->(@_);
 
     my $log = Log::Any->get_logger;
-    $log->tracef("HTTP response header:\n%s",
-                 $resp->status_line . "\r\n" . $resp->headers->as_string);
+    if ($config{-log_response_header}) {
+        $log->tracef("HTTP response header:\n%s",
+                     $resp->status_line . "\r\n" . $resp->headers->as_string);
+    }
+    if ($config{-log_response_body}) {
+        # XXX or 4, if we're calling request() which calls simple_request()
+        my @caller = caller(3);
+        my $log_b = Log::Any->get_logger(
+            category => "LWP_Response_Body::".$caller[0]);
+        $log_b->trace($resp->content);
+    }
+
     $resp;
 };
 
@@ -35,6 +45,10 @@ sub patch_data {
                 code        => $p_simple_request,
             },
         ],
+        config => {
+            -log_response_header => { default => 1 },
+            -log_response_body   => { default => 0 },
+        }
     };
 }
 
@@ -43,7 +57,10 @@ sub patch_data {
 
 =head1 SYNOPSIS
 
- use LWP::UserAgent::patch::log_response;
+ use LWP::UserAgent::patch::log_response
+     -log_response_header => 1, # default 1
+     -log_response_body   => 1, # default 0
+ ;
 
  # now all your LWP HTTP responses are logged
 
@@ -58,6 +75,18 @@ Sample script and output:
 This module patches LWP::UserAgent (which is used by LWP::Simple,
 WWW::Mechanize, among others) so that HTTP responses are logged using
 L<Log::Any>.
+
+Response body is logged in category C<LWP_Response_Body.*> so it can be
+separated. For example, to dump response body dumps to directory instead of
+file:
+
+ use Log::Any::App '$log',
+    -category_level => {LWP_Response_Body => 'off'},
+    -dir            => {
+        path           => "/path/to/dir",
+        level          => 'off',
+        category_level => {LWP_Response_Body => 'trace'},
+    };
 
 
 =head1 FAQ
