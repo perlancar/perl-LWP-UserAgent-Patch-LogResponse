@@ -4,7 +4,8 @@ use 5.010001;
 use strict;
 no warnings;
 
-use parent qw(Module::Patch);
+use Module::Patch 0.07 qw();
+use base qw(Module::Patch);
 
 # VERSION
 
@@ -13,6 +14,7 @@ our %config;
 my $p_simple_request = sub {
     require Log::Any;
 
+    my $ctx  = shift;
     my $orig = shift;
     my $resp = $orig->(@_);
 
@@ -24,15 +26,15 @@ my $p_simple_request = sub {
 
 sub patch_data {
     return {
-        config => {
-        },
-        versions => {
-            '6.04' => {
-                subs => {
-                    simple_request => $p_simple_request,
-                },
+        v => 2,
+        patches => [
+            {
+                action      => 'wrap',
+                mod_version => qr/^6\.0.*/,
+                sub_name    => 'simple_request',
+                code        => $p_simple_request,
             },
-        },
+        ],
     };
 }
 
