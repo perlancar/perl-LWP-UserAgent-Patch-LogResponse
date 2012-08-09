@@ -1,10 +1,10 @@
-package LWP::UserAgent::patch::log_response;
+package LWP::UserAgent::Patch::LogResponse;
 
 use 5.010001;
 use strict;
 no warnings;
 
-use Module::Patch 0.10 qw();
+use Module::Patch 0.12 qw();
 use base qw(Module::Patch);
 
 # VERSION
@@ -53,11 +53,11 @@ sub patch_data {
 }
 
 1;
-# ABSTRACT: Patch module for LWP::UserAgent
+# ABSTRACT: Log raw HTTP responses
 
 =head1 SYNOPSIS
 
- use LWP::UserAgent::patch::log_response
+ use LWP::UserAgent::Patch::LogResponse
      -log_response_header => 1, # default 1
      -log_response_body   => 1, # default 0
  ;
@@ -66,7 +66,7 @@ sub patch_data {
 
 Sample script and output:
 
- % TRACE=1 perl -MLog::Any::App -MLWP::UserAgent::patch::log_response \
+ % TRACE=1 perl -MLog::Any::App -MLWP::UserAgent::Patch::LogResponse \
    -MLWP::Simple -e'getprint "http://www.google.com/"'
 
 
@@ -99,7 +99,7 @@ WWW::Mechanize, etc).
 
 =head1 SEE ALSO
 
-Use L<Net::HTTP::Methods::patch::log_request> to log raw HTTP requests being
-sent to servers.
+Use L<Net::HTTP::Methods::Patch::LogRequest> to log raw HTTP requests being sent
+to servers.
 
 =cut
