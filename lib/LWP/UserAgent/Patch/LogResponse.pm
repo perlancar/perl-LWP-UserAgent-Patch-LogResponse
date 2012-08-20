@@ -67,7 +67,16 @@ sub patch_data {
 Sample script and output:
 
  % TRACE=1 perl -MLog::Any::App -MLWP::UserAgent::Patch::LogResponse \
-   -MLWP::Simple -e'getprint "http://www.google.com/"'
+   -MLWP::Simple -e'get "http://localhost:5000/"'
+ [261] HTTP response header:
+ 200 OK
+ Date: Mon, 20 Aug 2012 07:47:46 GMT
+ Server: HTTP::Server::PSGI
+ Content-Length: 13
+ Content-Type: text/plain
+ Client-Date: Mon, 20 Aug 2012 07:47:46 GMT
+ Client-Peer: 127.0.0.1:5000
+ Client-Response-Num: 1
 
 
 =head1 DESCRIPTION
