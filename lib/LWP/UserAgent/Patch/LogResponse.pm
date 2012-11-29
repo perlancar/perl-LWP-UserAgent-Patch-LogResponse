@@ -64,6 +64,8 @@ sub patch_data {
 1;
 # ABSTRACT: Log raw HTTP responses
 
+=for Pod::Coverage ^(patch_data)$
+
 =head1 SYNOPSIS
 
  use LWP::UserAgent::Patch::LogResponse
