@@ -35,7 +35,13 @@ my $p_simple_request = sub {
             my @caller = caller(3);
             my $log_b = Log::Any->get_logger(
                 category => "LWP_Response_Body::".$caller[0]);
-            $log_b->trace($resp->content);
+            my $content;
+            if ($config{-decode_response_body}) {
+                $content = $resp->decoded_content;
+            } else {
+                $content = $resp->content;
+            }
+            $log_b->trace($content);
         }
 
     }
@@ -55,8 +61,9 @@ sub patch_data {
             },
         ],
         config => {
-            -log_response_header => { default => 1 },
-            -log_response_body   => { default => 0 },
+            -log_response_header  => { default => 1 },
+            -log_response_body    => { default => 0 },
+            -decode_response_body => { default => 1 },
         }
     };
 }
@@ -69,8 +76,9 @@ sub patch_data {
 =head1 SYNOPSIS
 
  use LWP::UserAgent::Patch::LogResponse
-     -log_response_header => 1, # default 1
-     -log_response_body   => 1, # default 0
+     -log_response_header     => 1, # default 1
+     -log_response_body       => 1, # default 0
+     -decode_response_content => 1, # default 1, turn off, e.g. to get raw gzipped content
  ;
 
  # now all your LWP HTTP responses are logged
