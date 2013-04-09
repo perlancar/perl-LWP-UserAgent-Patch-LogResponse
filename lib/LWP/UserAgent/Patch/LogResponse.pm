@@ -76,9 +76,9 @@ sub patch_data {
 =head1 SYNOPSIS
 
  use LWP::UserAgent::Patch::LogResponse
-     -log_response_header     => 1, # default 1
-     -log_response_body       => 1, # default 0
-     -decode_response_content => 1, # default 1, turn off, e.g. to get raw gzipped content
+     -log_response_header  => 1, # default 1
+     -log_response_body    => 1, # default 0
+     -decode_response_body => 1, # default 1, turn off, e.g. to get raw gzipped content
  ;
 
  # now all your LWP HTTP responses are logged
