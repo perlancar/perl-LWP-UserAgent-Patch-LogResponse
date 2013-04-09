@@ -4,7 +4,7 @@ use 5.010001;
 use strict;
 no warnings;
 
-use Module::Patch 0.12 qw();
+use Module::Patch 0.17 qw();
 use base qw(Module::Patch);
 
 # VERSION
