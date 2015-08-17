@@ -1,5 +1,12 @@
 Revision history for LWP-UserAgent-Patch-LogResponse
 
+0.09    2015-08-17 (PERLANCAR)
+
+	- No functional changes.
+
+	- Switch from Log::Any to Log::Any::IfLOG.
+
+
 0.08    2013-04-10 (SHARYANTO)
 
         - No functional changes. Fix typo in Synopsis.
