@@ -1,5 +1,8 @@
 package LWP::UserAgent::Patch::LogResponse;
 
+# DATE
+# VERSION
+
 use 5.010001;
 use strict;
 no warnings;
@@ -7,18 +10,16 @@ no warnings;
 use Module::Patch 0.17 qw();
 use base qw(Module::Patch);
 
-# VERSION
-
 our %config;
 
 my $p_simple_request = sub {
-    require Log::Any;
+    require Log::Any::IfLOG;
 
     my $ctx  = shift;
     my $orig = $ctx->{orig};
     my $resp = $orig->(@_);
 
-    my $log = Log::Any->get_logger;
+    my $log = Log::Any::IfLOG->get_logger;
     if ($log->is_trace) {
 
         # there is no equivalent of caller_depth in Log::Any, so we do this only
@@ -33,7 +34,7 @@ my $p_simple_request = sub {
         if ($config{-log_response_body}) {
             # XXX or 4, if we're calling request() which calls simple_request()
             my @caller = caller(3);
-            my $log_b = Log::Any->get_logger(
+            my $log_b = Log::Any::IfLOG->get_logger(
                 category => "LWP_Response_Body::".$caller[0]);
             my $content;
             if ($config{-decode_response_body}) {
