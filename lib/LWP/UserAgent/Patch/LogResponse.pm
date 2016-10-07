@@ -56,7 +56,7 @@ sub patch_data {
         patches => [
             {
                 action      => 'wrap',
-                mod_version => qr/^6\.0.*/,
+                mod_version => qr/^6\..*/,
                 sub_name    => 'simple_request',
                 code        => $p_simple_request,
             },
